@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <script src="../jspon.js"></script>
+    <script src="../spec/mock.js"></script>
+    <script src="cycle.js"></script>
+    <script src="../spec/lodash.min.js"></script>
+    <script src="benchmark.js"></script>
+    <script>
+        var dojoConfig = {
+            async: false,
+            baseUrl: './dojo-src',
+            packages: [
+				'dojo',
+				'dojox'
+            ]
+        };
+    </script>
+    <script src="dojo-src/dojo/dojo.js"></script>
+    <script>
+        var dojoJSONTest1MockObj = function (dom, domConstruct, ref) {
+            var str = ref.toJson(getMockObj(), false, null, null);
+            var v = ref.fromJson(str);
+        };
+        var dojoJSONTest20MockObj = function (dom, domConstruct, ref) {
+            var str = ref.toJson(getArrayMockObj(), false, null, null);
+            var v = ref.fromJson(str);
+        };
+
+        var suite = new Benchmark.Suite;
+        // add tests
+        suite
+		.add('jspon#js (Id Referencing) (1 mock object)', function () {
+		    var str = JSPON.stringify(getMockObj());
+		    var v = JSPON.parse(str);
+		}, { setup: function () { JSPON.setSettings({ idFieldName: "$jsponId$" }); } })
+		.add('jspon#js (JsonPath Referencing) (1 mock object)', function () {
+		    var str = JSPON.stringify(getMockObj());
+		    var v = JSPON.parse(str);
+		}, { setup: function () { JSPON.setSettings(); } })
+		.add('Douglas Crockford\'s cycle#js  (JsonPath Referencing) (1 mock object)', function () {
+		    var str = JSON.stringify(JSON.decycle(getMockObj()));
+		    var v = JSON.retrocycle(JSON.parse(str));
+		})
+		.add('dojo#js (JsonPath Referencing) (1 mock object)', function () {
+		    require(['dojo/dom', 'dojo/dom-construct', 'dojox/json/ref'], dojoJSONTest1MockObj);
+		})
+
+        .add('jspon#js (Id Referencing) (20 mock object)', function () {
+            var str = JSPON.stringify(getArrayMockObj());
+            var v = JSPON.parse(str);
+        }, { setup: function () { JSPON.setSettings({ idFieldName: "$jsponId$" }); } })
+		.add('jspon#js (JsonPath Referencing) (20 mock object)', function () {
+		    var str = JSPON.stringify(getArrayMockObj());
+		    var v = JSPON.parse(str);
+		}, { setup: function () { JSPON.setSettings(); } })
+		.add('Douglas Crockford\'s cycle#js (JsonPath Referencing) (20 mock object)', function () {
+		    var str = JSON.stringify(JSON.decycle(getArrayMockObj()));
+		    var v = JSON.retrocycle(JSON.parse(str));
+		})
+		.add('dojo#js (JsonPath Referencing) (20 mock object)', function () {
+		    require(['dojo/dom', 'dojo/dom-construct', 'dojox/json/ref'], dojoJSONTest20MockObj);
+		})
+		// add listeners
+		.on('cycle', function (event) {
+		    document.writeln(String(event.target) + '<br />');
+		})
+		.on('complete', function () {
+		    document.writeln('Fastest is ' + this.filter('fastest').pluck('name') + '<br />');
+		})
+		// run async
+		.run({ 'async': false });
+    </script>
+</body>
+</html>
