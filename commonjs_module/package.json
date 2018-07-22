@@ -1,0 +1,40 @@
+{
+  "name": "jspon",
+  "version": "1.0.0",
+  "description": "JSPON - Can parse and stringify with circular refernces",
+  "main": "jspon.js",
+  "directories": {
+  },
+  "files": [
+    "jspon.js"
+  ],
+  "scripts": {
+    "test": "jasmine ./tests/spec.js --random=false",
+    "bench": "node ./perf/perf.js"
+  },
+  "keywords": [
+    "json",
+    "circular",
+    "reference",
+    "jsonPath",
+    "parse",
+    "stringify"
+  ],
+  "author": "mdavisJr",
+  "homepage": "https://github.com/mdavisJr/JSPON-For-JavaScript#readme",
+  "bugs": { 
+    "url" : "https://github.com/mdavisJr/JSPON-For-JavaScript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdavisJr/JSPON-For-JavaScript.git"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "circular-json": "^0.5.5",
+    "jasmine": "^3.1.0",
+    "microtime": "^2.1.8"
+  }
+}
