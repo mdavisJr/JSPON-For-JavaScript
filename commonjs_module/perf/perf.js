@@ -3,8 +3,7 @@ global.JSPON = require('../jspon.js');
 global.mock = require('../tests/mock.js');
 global.CircularJSON = require('circular-json');
 const fs = require('fs');
-eval(fs.readFileSync('../perf/cycle.js')+'');
-
+eval(fs.readFileSync('perf/cycle.js')+'');
 
 var oneMockObjectsSuite = new Benchmark.Suite;
 
