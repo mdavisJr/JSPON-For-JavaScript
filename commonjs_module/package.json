@@ -1,7 +1,7 @@
 {
   "name": "jspon",
   "version": "1.0.0",
-  "description": "JSPON - Can parse and stringify with circular refernces",
+  "description": "JSPON - Can parse and stringify objects with circular references",
   "main": "jspon.js",
   "directories": {
   },
@@ -18,7 +18,8 @@
     "reference",
     "jsonPath",
     "parse",
-    "stringify"
+    "stringify",
+    "cycle"
   ],
   "author": "mdavisJr",
   "homepage": "https://github.com/mdavisJr/JSPON-For-JavaScript#readme",
