@@ -1,6 +1,6 @@
 {
   "name": "jspon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JSPON - Can parse and stringify objects with circular references",
   "main": "jspon.js",
   "directories": {
