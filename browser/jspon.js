@@ -129,7 +129,14 @@ JSPON = (function () {
 	        } else {
 	            for (var key in oldValue) {
 	                if (Object.prototype.hasOwnProperty.call(oldValue, key)) {
-	                    newValue[key] = jsponClone(objTracker, oldValue[key], useIdBase ? id : useJSONPathDotNotation ? id + '.' + key : id + '[\'' + key + '\']');
+	                    newValue[key] = jsponClone(
+	                        objTracker, 
+	                        oldValue[key], 
+	                            useIdBase 
+	                                ? id 
+	                                : useJSONPathDotNotation 
+	                                    ? id + '.' + key 
+	                                    : id + '[\'' + key + '\']');
 	                }
 	            }
 	        }
@@ -149,11 +156,27 @@ JSPON = (function () {
 	        objTracker[id] = obj;
 	        if (obj.constructor === Array) {
 	            for (var i = 0; i < obj.length; i++) {
-	                obj[i] = jsponParse(objTracker, obj[i], useIdBase ? obj[i][idFieldName] : id + '[' + i + ']');
+	                obj[i] = jsponParse(
+	                    objTracker, 
+	                    obj[i], 
+	                    useIdBase
+	                        ? obj[i]
+	                            ? obj[i][idFieldName]
+	                            : null
+	                        : id + '[' + i + ']');
 	            }
 	        } else {
 	            for (var key in obj) {
-	                obj[key] = jsponParse(objTracker, obj[key], useIdBase ? obj[key][idFieldName] : useJSONPathDotNotation ? id + '.' + key : id + '[\'' + key + '\']');
+	                obj[key] = jsponParse(
+	                    objTracker, 
+	                    obj[key], 
+	                    useIdBase
+	                        ? obj[key]
+	                            ? obj[key][idFieldName]
+	                            : null
+	                        : useJSONPathDotNotation 
+	                            ? id + '.' + key 
+	                            : id + '[\'' + key + '\']');
 	            }
 	        }
 	        if (useIdBase) delete obj[idFieldName];

@@ -28,6 +28,10 @@ function checkForEqualityAgainstMock(generatedObj, preserveArrays) {
     expect(generatedObj.l.m.n.o.p.q).toBe(generatedObj.a);
     expect(generatedObj.s).toBe(generatedObj.l.m.n.o.p);
     expect(generatedObj.t).toBe(generatedObj.h[4]);
+    expect(generatedObj.t.tt).toBe(null);
+    expect(generatedObj.x).toBe(null);
+    expect(generatedObj.z).toBe(null);
+    expect(generatedObj.l.m.n.pp).toBe(null);
     assert.deepEqual(generatedObj, mock.getMockObj());
 }
 
