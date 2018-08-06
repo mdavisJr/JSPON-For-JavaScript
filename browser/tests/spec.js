@@ -1,6 +1,3 @@
-const JSPON = require('../jspon.js');
-const mock = require('./mock.js');
-const _ = require('lodash');        
 function checkForEqualityAgainstMock(generatedObj, preserveArrays) {
     expect(generatedObj.a).toBe(generatedObj.c);
     expect(generatedObj.a.parent).toBe(generatedObj);
@@ -31,7 +28,7 @@ function checkForEqualityAgainstMock(generatedObj, preserveArrays) {
     expect(generatedObj.x).toBe(null);
     expect(generatedObj.z).toBe(null);
     expect(generatedObj.l.m.n.pp).toBe(null);
-    _.isEqual(generatedObj, mock.getMockObj());
+    _.isEqual(generatedObj, getMockObj());
 }
 
 function getStringifyMockObj() {
@@ -48,20 +45,20 @@ function getStringifyMockObj() {
 
 function printDoc(obj) {
     //Documentation        
-    console.log("**" + obj.name + "**");
-    console.log("```");
-    console.log("const JSPON = require('jspon');");
+    //console.log("**" + obj.name + "**");
+    //console.log("```");
+    //console.log("const JSPON = require('jspon');");
     if (obj.setting) {
-        console.log(obj.setting);
+        //console.log(obj.setting);
     }
-    console.log("");
-    console.log("var json = JSPON.stringify(getObjWithCircularRef());");
-    console.log("");
-    console.log("var obj = JSPON.parse(json);");
-    console.log("");
-    console.log("//Value of json variable");
-    console.log("//" + obj.expectedValue);
-    console.log("```");
+    //console.log("");
+    //console.log("var json = JSPON.stringify(getObjWithCircularRef());");
+    //console.log("");
+    //console.log("var obj = JSPON.parse(json);");
+    //console.log("");
+    //console.log("//Value of json variable");
+    //console.log("//" + obj.expectedValue);
+    //console.log("```");
 }
 
 describe("A suite", function () {
@@ -119,7 +116,7 @@ describe("A suite", function () {
         expect(settings.preserveArrays).toBe(false);
         expect(settings.jsonPathRoot).toBe(undefined);
         expect(settings.jsonPathFormat).toBe('DotNotation');
-        var str = JSPON.stringify(mock.getMockObj());
+        var str = JSPON.stringify(getMockObj());
         var v = JSPON.parse(str);
         checkForEqualityAgainstMock(v, false);
     });
@@ -132,7 +129,7 @@ describe("A suite", function () {
         expect(settings.preserveArrays).toBe(true);
         expect(settings.jsonPathRoot).toBe(undefined);
         expect(settings.jsonPathFormat).toBe('DotNotation');
-        var str = JSPON.stringify(mock.getMockObj());
+        var str = JSPON.stringify(getMockObj());
         var v = JSPON.parse(str);
         checkForEqualityAgainstMock(v, true);
     });
@@ -145,7 +142,7 @@ describe("A suite", function () {
         expect(settings.preserveArrays).toBe(false);
         expect(settings.jsonPathRoot).toBe('$');
         expect(settings.jsonPathFormat).toBe('DotNotation');
-        var str = JSPON.stringify(mock.getMockObj());
+        var str = JSPON.stringify(getMockObj());
         var v = JSPON.parse(str);
         checkForEqualityAgainstMock(v, false);
     });
@@ -158,7 +155,7 @@ describe("A suite", function () {
         expect(settings.preserveArrays).toBe(true);
         expect(settings.jsonPathRoot).toBe('$');
         expect(settings.jsonPathFormat).toBe('DotNotation');
-        var str = JSPON.stringify(mock.getMockObj());
+        var str = JSPON.stringify(getMockObj());
         var v = JSPON.parse(str);
         checkForEqualityAgainstMock(v, true);
     });
@@ -277,4 +274,3 @@ describe("A suite", function () {
         });
     });
 });
-

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	<script src="jspon.js"></script>
+	<script src="mock.js"></script>
+	<script src="cycle.js"></script>
+	<script src="circular-json.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/benchmark/benchmark.min.js"></script>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
+	<script>
+		var dojoJSONTest1MockObj = function (dom, domConstruct, ref) {
+			var str = ref.toJson(getMockObj(), false, null, null);
+			var v = ref.fromJson(str);
+		};
+		var dojoJSONTest20MockObj = function (dom, domConstruct, ref) {
+			var str = ref.toJson(getArrayMockObj(), false, null, null);
+			var v = ref.fromJson(str);
+		};
+
+		document.writeln('1 mock object');
+		document.writeln('<br />');
+		var oneMockObjectsSuite = new Benchmark.Suite;
+		oneMockObjectsSuite
+			.add('jspon#js (Id Referencing)', function () {
+				var str = JSPON.stringify(getMockObj());
+				var v = JSPON.parse(str);
+			}, { setup: function () { JSPON.setSettings({ idFieldName: "$jsponId$" }); } })
+			.add('jspon#js (JsonPath Referencing)', function () {
+				var str = JSPON.stringify(getMockObj());
+				var v = JSPON.parse(str);
+			}, { setup: function () { JSPON.setSettings(); } })
+			.add('Douglas Crockford\'s cycle#js  (JsonPath Referencing)', function () {
+				var str = JSON.stringify(JSON.decycle(getMockObj()));
+				var v = JSON.retrocycle(JSON.parse(str));
+			})
+			.add('dojo#js (JsonPath Referencing)', function () {
+				require(['dojo/dom', 'dojo/dom-construct', 'dojox/json/ref'], dojoJSONTest1MockObj);
+			})
+			.add('npm circular-json', () => {
+				var str = CircularJSON.stringify(getMockObj());
+				var v = CircularJSON.parse(str);
+			})
+			.on('cycle', function (event) {
+				document.writeln(String(event.target) + '<br />');
+			})
+			.on('complete', function () {
+				document.writeln('Fastest is ' + oneMockObjectsSuite.filter('fastest').map('name') + '<br />');
+			})
+			.run({ 'async': false });
+			
+		document.writeln('<br />');
+		document.writeln('<br />');
+
+		document.writeln('20 mock object');
+		document.writeln('<br />');
+		var multipleMockObjectsSuite = new Benchmark.Suite;
+		multipleMockObjectsSuite
+			.add('jspon#js (Id Referencing)', function () {
+				var str = JSPON.stringify(getArrayMockObj());
+				var v = JSPON.parse(str);
+			}, { setup: function () { JSPON.setSettings({ idFieldName: "$jsponId$" }); } })
+			.add('jspon#js (JsonPath Referencing)', function () {
+				var str = JSPON.stringify(getArrayMockObj());
+				var v = JSPON.parse(str);
+			}, { setup: function () { JSPON.setSettings(); } })
+			.add('Douglas Crockford\'s cycle#js (JsonPath Referencing)', function () {
+				var str = JSON.stringify(JSON.decycle(getArrayMockObj()));
+				var v = JSON.retrocycle(JSON.parse(str));
+			})
+			.add('dojo#js (JsonPath Referencing)', function () {
+			    require(['dojo/dom', 'dojo/dom-construct', 'dojox/json/ref'], dojoJSONTest20MockObj);
+			})
+			.add('npm circular-json', () => {
+				var str = CircularJSON.stringify(getArrayMockObj());
+				var v = CircularJSON.parse(str);
+			})
+			.on('cycle', function (event) {
+				document.writeln(String(event.target) + '<br />');
+			})
+			.on('complete', function () {
+				document.writeln('Fastest is ' + multipleMockObjectsSuite.filter('fastest').map('name') + '<br />');
+			})
+			// run async
+			.run({ 'async': false });
+	</script>
+</body>
+
+</html>
